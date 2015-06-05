@@ -1,6 +1,6 @@
 FROM jenkins
 # deploy a jenkins to build android sample https://github.com/googlesamples/android-TextLinkify
-MAINTAINER RLO
+MAINTAINER regly
 
 # update to be able to run aapt under jenkins
 USER root
