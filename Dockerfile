@@ -1,6 +1,6 @@
 FROM jenkins
 # deploy a jenkins to build android sample https://github.com/googlesamples/android-TextLinkify
-MAINTAINER regly
+MAINTAINER regly lbclocatelli@gmail.com
 
 # update to be able to run aapt under jenkins
 USER root
@@ -16,20 +16,20 @@ ADD https://updates.jenkins-ci.org/download/plugins/ssh-credentials/latest/ssh-c
 ADD https://updates.jenkins-ci.org/download/plugins/gradle/latest/gradle.hpi /usr/share/jenkins/ref/plugins/gradle.hpi
 ADD https://updates.jenkins-ci.org/download/plugins/windows-azure-storage/latest/windows-azure-storage.hpi /usr/share/jenkins/ref/plugins/windows-azure-storage.hpi
 
-RUN mkdir -p /usr/share/jenkins/android
-RUN chown -R jenkins "$JENKINS_HOME" /usr/share/jenkins/android
+RUN mkdir -p /usr/share/jenkins/ref/android
+RUN chown -R jenkins "$JENKINS_HOME" /usr/share/jenkins/ref/android
 
 USER jenkins
 # Install Android SDK
-RUN cd /usr/share/jenkins/android && wget -nv -O - http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz | tar --no-same-permissions --no-same-owner -xvzf - && chmod -R a+rX android-sdk-linux
+RUN cd /usr/share/jenkins/ref/android && wget -nv -O - http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz | tar --no-same-permissions --no-same-owner -xvzf - && chmod -R a+rX android-sdk-linux
 
-ENV ANDROID_HOME /usr/share/jenkins/android/android-sdk-linux
+ENV ANDROID_HOME /usr/share/jenkins/ref/android/android-sdk-linux
 ENV PATH $PATH:$ANDROID_HOME/tools
 ENV PATH $PATH:$ANDROID_HOME/platform-tools
 
 # Install Android SDK components
 ENV ANDROID_SDK_COMPONENTS platform-tools,build-tools-22.0.1,android-22,extra-android-m2repository,extra-google-m2repository
-RUN echo y | /usr/share/jenkins/android/android-sdk-linux/tools/android update sdk --no-ui --all --filter "${ANDROID_SDK_COMPONENTS}"
+RUN echo y | /usr/share/jenkins/ref/android/android-sdk-linux/tools/android update sdk --no-ui --all --filter "${ANDROID_SDK_COMPONENTS}"
 
 USER root
 RUN chown -R jenkins /usr/share/jenkins/ref/plugins
